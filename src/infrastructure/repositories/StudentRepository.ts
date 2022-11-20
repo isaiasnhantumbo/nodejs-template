@@ -1,10 +1,11 @@
 import { Student } from "../../domain/Student";
 import { AppDataSource } from "../../persistence/data-source";
 import { IStudentRepository } from "./../../app/interfaces/IStudentRepository";
-
 export class StudentRepository implements IStudentRepository {
-  public studentRepository = AppDataSource.getRepository(Student);
-
+  private studentRepository: any;
+  constructor() {
+    this.studentRepository = AppDataSource.getRepository(Student);
+  }
   async create(entity: Student): Promise<Student> {
     this.studentRepository.create(entity);
     return await this.studentRepository.save(entity);

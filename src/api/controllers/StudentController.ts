@@ -1,9 +1,14 @@
+import { createStudent } from "./../../app/Students/CreateStudent";
+import { container } from "tsyringe";
 import { Router } from "express";
-import { CreateStudent } from "./../../app/Students/CreateStudent";
-import { GetAllStudents } from "../../app/Students/GetAllStudents";
+import { getAllStudent } from "../../app/Students/GetAllStudents";
 const studentsRoutes = Router();
 
-studentsRoutes.post("/student", new CreateStudent().handle);
-studentsRoutes.get("/student", new GetAllStudents().handle);
+studentsRoutes.post("/student", (req, res) => {
+  createStudent.handle(req, res);
+});
+studentsRoutes.get("/student", (req, res) => {
+  getAllStudent.handle(req, res);
+});
 
 export { studentsRoutes };

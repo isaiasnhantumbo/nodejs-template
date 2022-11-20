@@ -1,17 +1,21 @@
-import { AppError } from "./../errors/AppError";
-import { StudentRepository } from "./../../infrastructure/repositories/StudentRepository";
-import { IStudentRepository } from "./../interfaces/IStudentRepository";
-import { Student } from "./../../domain/Student";
-import { Request, Response } from "express";
+import { Student } from "./../../../domain/Student";
+import { IStudentRepository } from "./../../interfaces/IStudentRepository";
 
-export class CreateStudent {
+import { Request, Response } from "express";
+import { inject, injectable, container } from "tsyringe";
+@injectable()
+class CreateStudent {
+  constructor(
+    @inject("StudentRepository")
+    private studentsRepository: IStudentRepository
+  ) {}
   async handle(req: Request, res: Response) {
     const { name } = req.body;
     if (!name) {
       return res.status(400).json({ message: "O nome e obrigatório" });
     }
     try {
-      const studentExist = await new StudentRepository().findByName(name);
+      const studentExist = await this.studentsRepository.findByName(name);
       if (studentExist) {
         // throw new AppError("Student Exist", 409);
 
@@ -19,7 +23,7 @@ export class CreateStudent {
       }
       const student = new Student();
       student.name = name;
-      await new StudentRepository().create(student);
+      await this.studentsRepository.create(student);
       return res.status(201).json(student);
     } catch (error) {
       console.log(error);
@@ -27,3 +31,5 @@ export class CreateStudent {
     }
   }
 }
+
+export const createStudent = container.resolve(CreateStudent);
