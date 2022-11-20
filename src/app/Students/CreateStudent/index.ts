@@ -1,8 +1,11 @@
+import { StudentDto } from './../../dtos/StudentDto';
 import { Student } from "./../../../domain/Student";
 import { IStudentRepository } from "./../../interfaces/IStudentRepository";
 
 import { Request, Response } from "express";
 import { inject, injectable, container } from "tsyringe";
+import { AppError } from "../../../shared/errors/AppError";
+import { mapper } from '../../helpers/mappings/mapper';
 @injectable()
 class CreateStudent {
   constructor(
@@ -17,17 +20,17 @@ class CreateStudent {
     try {
       const studentExist = await this.studentsRepository.findByName(name);
       if (studentExist) {
-        // throw new AppError("Student Exist", 409);
+        throw new AppError("Student Exist", 409);
 
-        return res.status(409).json({ message: "Student Exist" });
+        // return res.status(409).json({ message: "Student Exist" });
       }
       const student = new Student();
       student.name = name;
       await this.studentsRepository.create(student);
-      return res.status(201).json(student);
-    } catch (error) {
+      return res.status(201).json(mapper.map(student, Student, StudentDto));
+    } catch (error:any) {
       console.log(error);
-      return res.status(500).json({ message: "Internal Server Error" });
+      return res.status(error.statusCode).json({ message: error.message });
     }
   }
 }

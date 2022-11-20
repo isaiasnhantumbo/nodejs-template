@@ -4,12 +4,17 @@ import "../shared/container";
 
 import express from "express";
 
-// import { errorMiddleware } from "./middlewares/ApiError";
+import { MappingProfiles } from "../app/helpers/mappings/mapper";
+import { errorMiddleware } from "./middlewares/errorMiddleware";
 import { router } from "./routes";
 
 const app = express();
+//DTO's
+new MappingProfiles().MappingProfiles();
 
 app.use(express.json());
+app.use(errorMiddleware);
+
 app.use(router);
-// app.use(errorMiddleware);
+
 export { app };

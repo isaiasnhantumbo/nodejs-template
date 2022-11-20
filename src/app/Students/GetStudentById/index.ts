@@ -1,22 +1,22 @@
-import { StudentDto } from "./../../dtos/StudentDto";
 import { Student } from "./../../../domain/Student";
+import { mapper } from "../../helpers/mappings/mapper";
 import { IStudentRepository } from "../../interfaces/IStudentRepository";
 import { Request, Response } from "express";
 
 import { inject, injectable, container } from "tsyringe";
-import { mapper } from "../../helpers/mappings/mapper";
+import { StudentDto } from "../../dtos/StudentDto";
 @injectable()
-class GetAllStudents {
+class GetStudentById {
   constructor(
     @inject("StudentRepository")
     private studentsRepository: IStudentRepository
   ) {}
   async handle(req: Request, res: Response) {
     try {
-      const students = await this.studentsRepository.find();
-      return res
-        .status(201)
-        .json(mapper.mapArray(students, Student, StudentDto));
+      const { id } = req.params;
+      const student = await this.studentsRepository.findById(id);
+
+      return res.status(201).json(mapper.map(student, Student, StudentDto));
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal Server Error" });
@@ -24,4 +24,4 @@ class GetAllStudents {
   }
 }
 
-export const getAllStudent = container.resolve(GetAllStudents);
+export const getStudentById = container.resolve(GetStudentById);
