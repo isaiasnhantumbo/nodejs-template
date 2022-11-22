@@ -1,19 +1,13 @@
 import { Router } from "express";
-import { container } from "tsyringe";
 
-import { createStudent } from "./../../app/Students/CreateStudent";
-import { getAllStudent } from "../../app/Students/GetAllStudents";
-import { getStudentById } from "../../app/Students/GetStudentById";
+import { GetAllStudentsController } from "./../../app/Students/GetAllStudents";
+import { GetStudentByIdController } from "./../../app/Students/GetStudentById";
+import { CreateStudentController } from "../../app/Students/CreateStudent";
+
 const studentsRoutes = Router();
 
-studentsRoutes.post("/student", (req, res) => {
-  createStudent.handle(req, res);
-});
-studentsRoutes.get("/student", (req, res) => {
-  getAllStudent.handle(req, res);
-});
-studentsRoutes.get("/student/:id", (req, res) => {
-  getStudentById.handle(req, res);
-});
+studentsRoutes.post("/student", new CreateStudentController().handle);
+studentsRoutes.get("/student", new GetAllStudentsController().handle);
+studentsRoutes.get("/student/:id", new GetStudentByIdController().handle);
 
 export { studentsRoutes };
