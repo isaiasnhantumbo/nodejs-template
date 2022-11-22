@@ -1,8 +1,11 @@
+import { Repository } from "typeorm";
+
+import { IStudentRepository } from "./../../app/interfaces/IStudentRepository";
 import { Student } from "../../domain/Student";
 import { AppDataSource } from "../../persistence/data-source";
-import { IStudentRepository } from "./../../app/interfaces/IStudentRepository";
+
 export class StudentRepository implements IStudentRepository {
-  private studentRepository: any;
+  private studentRepository :Repository<Student>;
   constructor() {
     this.studentRepository = AppDataSource.getRepository(Student);
   }
