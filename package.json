@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node ./dist/api/server.js",
+    "start": "export NODE_ENV=production && node ./dist/api/server.js",
     "build": "tsc -p tsconfig.json",
     "dev": "tsnd --transpile-only --respawn --ignore-watch node_modules src/api/server.ts",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/persistence/data-source.ts migration:generate ./src/persistence/migrations/default",
