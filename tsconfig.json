@@ -13,8 +13,8 @@
      "forceConsistentCasingInFileNames": true,
      "strict": true,
      "noImplicitAny": false,
-     "strictPropertyInitialization": false
-     // "skipLibCheck": true
+     "strictPropertyInitialization": false,
+     "skipLibCheck": true
    },
    "include": ["src/**/*"],
    "exclude": ["node_modules", "dist"],
