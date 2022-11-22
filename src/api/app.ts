@@ -13,8 +13,8 @@ const app = express();
 new MappingProfiles().MappingProfiles();
 
 app.use(express.json());
-app.use(errorMiddleware);
 
 app.use(router);
+app.use(errorMiddleware)
 
 export { app };
