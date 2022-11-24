@@ -12,7 +12,7 @@ export class GetAllStudents {
     private studentsRepository: IStudentRepository
   ) {}
   async handle(): Promise<StudentDto[]> {
-    const students = await this.studentsRepository.find();
+    const students = await this.studentsRepository.findAll();
     return mapper.mapArray(students, Student, StudentDto);
   }
 }

@@ -1,8 +1,8 @@
 import { AutoMap } from "@automapper/classes";
 
 export class StudentDto {
-//   @AutoMap()
-//   id: string;
+  @AutoMap()
+  id: number;
   @AutoMap()
   name: string;
 }

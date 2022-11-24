@@ -1,6 +1,7 @@
 import { StudentDto } from "./../../dtos/StudentDto";
 import { Student } from "./../../../domain/Student";
 import { IStudentRepository } from "./../../interfaces/IStudentRepository";
+import { Body } from "tsoa";
 
 import { Request, Response } from "express";
 import { inject, injectable, container } from "tsyringe";
@@ -13,12 +14,16 @@ export class CreateStudent {
     @inject("StudentRepository")
     private studentsRepository: IStudentRepository
   ) {}
-  async handle(data: ICreateStudent): Promise<StudentDto> {
+  async handle(@Body() data: ICreateStudent): Promise<StudentDto> {
     const { name } = data;
     if (!name) {
       throw new BadRequestError("The field name is required");
     }
-    const studentAlreadyExist = await this.studentsRepository.findByName(name);
+    const studentAlreadyExist = await this.studentsRepository.findOneBy({
+      where: {
+        name,
+      },
+    });
     if (studentAlreadyExist) {
       throw new AppError("Student Exist", 409);
     }

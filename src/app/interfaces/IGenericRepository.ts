@@ -1,7 +1,10 @@
+import { FindManyOptions, FindOneOptions, FindOptionsWhere,DeleteResult } from "typeorm";
+
 export interface IGenericRepository<T> {
   create(entity: T): Promise<T>;
-  findById(id: string): Promise<T>;
-  find(): Promise<T[]>;
+  findOneBy(options: FindOneOptions<T>): Promise<T | null>;
+  findManyBy(options: FindManyOptions<T>): Promise<T[] | undefined>;
+  findAll(): Promise<T[]>;
   update(entity: T): Promise<T>;
-  delete(id: string): Promise<boolean>;
+  delete(options: FindOptionsWhere<T>): Promise<DeleteResult>;
 }
