@@ -1,14 +1,14 @@
+import {
+  DeleteResult,
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+  Repository,
+} from "typeorm";
+
 import { BaseEntity } from "./../../domain/BaseEntity";
 import { IBaseEntity } from "../../app/interfaces/IBaseEntity";
 import { IGenericRepository } from "../../app/interfaces/IGenericRepository";
-import {
-  FindOptionsWhere,
-  FindManyOptions,
-  Repository,
-  FindOneOptions,
-  DeepPartial,
-  DeleteResult,
-} from "typeorm";
 import { AppDataSource } from "../../persistence/data-source";
 import { AppError } from "../../shared/errors/AppError";
 
@@ -54,6 +54,11 @@ export abstract class BaseRepository<
         date_updated: now,
       })
     );
+  }
+  async findAndCountBy(
+    options: FindOptionsWhere<Entity>
+  ): Promise<[Entity[], number]> {
+    return await this.execute((repo) => repo.findAndCountBy(options));
   }
   async update(entity: Entity): Promise<Entity> {
     const now = new Date();
