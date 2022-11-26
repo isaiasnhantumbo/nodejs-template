@@ -1,13 +1,25 @@
+import { Student } from "./../../../domain/Student";
+import { mapper } from "../../helpers/mappings/mapper";
+import { IStudentRepository } from "../../interfaces/IStudentRepository";
 import { Request, Response } from "express";
-import { container } from "tsyringe";
 
-import { GetStudentById } from "./GetStudentById";
+import { inject, injectable, container } from "tsyringe";
+import { StudentDto } from "../../dtos/StudentDto";
+import { NotFoundError } from "../../../shared/errors/AppError";
+@injectable()
+export class GetStudentById {
+  constructor(
+    @inject("StudentRepository")
+    private studentsRepository: IStudentRepository
+  ) {}
+  async handle(id: number): Promise<StudentDto> {
+    const student = await this.studentsRepository.findOneBy({
+      where: { id },
+    });
 
-export class GetStudentByIdController {
-  async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params;
-    const getStudentById = container.resolve(GetStudentById);
-    const student = await getStudentById.handle(id);
-    return response.status(200).json(student);
+    if (student === null) {
+      throw new NotFoundError("Student not Found");
+    }
+    return mapper.map(student, Student, StudentDto);
   }
 }

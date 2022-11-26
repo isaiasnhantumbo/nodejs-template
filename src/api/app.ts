@@ -2,19 +2,24 @@ import "express-async-errors";
 
 import "../shared/container";
 
-import express from "express";
+import express, { Application } from "express";
+import swaggerUi from "swagger-ui-express";
 
 import { MappingProfiles } from "../app/helpers/mappings/mapper";
+import swaggerDocs from "./docs/swagger.json";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
-import { router } from "./routes";
+import { RegisterRoutes } from "./routes";
 
-const app = express();
+const app: Application = express();
 //DTO's
 new MappingProfiles().MappingProfiles();
-
 app.use(express.json());
-
-app.use(router);
-app.use(errorMiddleware)
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs)
+);
+RegisterRoutes(app);
+app.use(errorMiddleware);
 
 export { app };
