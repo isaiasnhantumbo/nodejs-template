@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { AppDataSource } from "../persistence/data-source";
 import { app } from "./app";
 

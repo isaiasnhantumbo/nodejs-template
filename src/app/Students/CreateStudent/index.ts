@@ -1,29 +1,30 @@
-import { StudentDto } from "../../dtos/StudentDto";
-import { Student } from "../../../domain/Student";
-import { IStudentRepository } from "../../interfaces/IStudentRepository";
 
-import { Request, Response } from "express";
-import { inject, injectable, container } from "tsyringe";
+import { inject, injectable } from "tsyringe";
+
+import { Student } from "../../../domain/Student";
 import { AppError, BadRequestError } from "../../../shared/errors/AppError";
-import { mapper } from "../../helpers/mappings/mapper";
 import { ICreateStudent } from "../../@types/ICreateStudent";
+import { StudentDto } from "../../dtos/StudentDto";
+import { mapper } from "../../helpers/mappings/mapper";
+import { IStudentRepository } from "../../interfaces/IStudentRepository";
 @injectable()
 export class CreateStudent {
-  constructor(
+  constructor (
     @inject("StudentRepository")
-    private studentsRepository: IStudentRepository
+    private readonly studentsRepository: IStudentRepository
   ) {}
-  async handle(data: ICreateStudent): Promise<StudentDto> {
+
+  async handle (data: ICreateStudent): Promise<StudentDto> {
     const { name } = data;
-    if (!name) {
+    if (name.length === 0) {
       throw new BadRequestError("The field name is required");
     }
     const studentAlreadyExist = await this.studentsRepository.findOneBy({
       where: {
-        name,
-      },
+        name
+      }
     });
-    if (studentAlreadyExist) {
+    if (studentAlreadyExist != null) {
       throw new AppError("Student Exist", 409);
     }
     const student = new Student();

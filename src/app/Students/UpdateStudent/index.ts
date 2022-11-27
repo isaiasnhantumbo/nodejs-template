@@ -1,27 +1,26 @@
-import { StudentDto } from "../../dtos/StudentDto";
-import { Student } from "../../../domain/Student";
-import { IStudentRepository } from "../../interfaces/IStudentRepository";
-import { Body } from "tsoa";
+import { inject, injectable } from "tsyringe";
 
-import { Request, Response } from "express";
-import { inject, injectable, container } from "tsyringe";
-import { AppError, BadRequestError } from "../../../shared/errors/AppError";
-import { mapper } from "../../helpers/mappings/mapper";
+import { Student } from "../../../domain/Student";
+import { AppError } from "../../../shared/errors/AppError";
 import { ICreateStudent } from "../../@types/ICreateStudent";
+import { StudentDto } from "../../dtos/StudentDto";
+import { mapper } from "../../helpers/mappings/mapper";
+import { IStudentRepository } from "../../interfaces/IStudentRepository";
 @injectable()
 export class UpdateStudent {
-  constructor(
+  constructor (
     @inject("StudentRepository")
-    private studentsRepository: IStudentRepository
+    private readonly studentsRepository: IStudentRepository
   ) {}
-  async handle(id: number, data: ICreateStudent): Promise<StudentDto> {
+
+  async handle (id: number, data: ICreateStudent): Promise<StudentDto> {
     const { name } = data;
     const student = await this.studentsRepository.findOneBy({
       where: {
-        id,
-      },
+        id
+      }
     });
-    if (!student) {
+    if (student == null) {
       throw new AppError("Student not Exist", 400);
     }
     student.name = name;

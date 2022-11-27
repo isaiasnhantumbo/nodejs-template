@@ -1,5 +1,3 @@
-import { UpdateStudent } from "./../../app/Students/UpdateStudent/index";
-import { StudentDto } from "./../../app/dtos/StudentDto";
 import {
   Body,
   Controller,
@@ -9,30 +7,32 @@ import {
   Patch,
   Path,
   Post,
-  Query,
   Route,
   SuccessResponse,
-  Tags,
+  Tags
 } from "tsoa";
 import { container } from "tsyringe";
-import { GetAllStudents } from "../../app/Students/GetAllStudents";
-import { CreateStudent } from "../../app/Students/CreateStudent";
+
 import { ICreateStudent } from "../../app/@types/ICreateStudent";
-import { GetStudentById } from "../../app/Students/GetStudentById";
+import { CreateStudent } from "../../app/Students/CreateStudent";
 import { DeleteStudent } from "../../app/Students/DeleteStudent";
+import { GetAllStudents } from "../../app/Students/GetAllStudents";
+import { GetStudentById } from "../../app/Students/GetStudentById";
+import { StudentDto } from "./../../app/dtos/StudentDto";
+import { UpdateStudent } from "./../../app/Students/UpdateStudent/index";
 
 @Route("students")
-@Tags('Students Routes')
+@Tags("Students Routes")
 export class StudentsController extends Controller {
   /**
    * Create Student Route
    */
   @Example<ICreateStudent>({
-    name: "John Doe",
+    name: "John Doe"
   })
   @SuccessResponse("201", "Created")
   @Post()
-  public async createStudent(
+  public async createStudent (
     @Body() requestBody: ICreateStudent
   ): Promise<StudentDto> {
     const createStudent = container.resolve(CreateStudent);
@@ -42,23 +42,23 @@ export class StudentsController extends Controller {
   }
 
   @Get()
-  public async getStudents(): Promise<StudentDto[]> {
+  public async getStudents (): Promise<StudentDto[]> {
     const getAllStudents = container.resolve(GetAllStudents);
     const students = await getAllStudents.handle();
     return students;
   }
 
   @Get("{studentId}")
-  public async getStudentById(@Path() studentId: number): Promise<StudentDto> {
+  public async getStudentById (@Path() studentId: number): Promise<StudentDto> {
     const getStudentById = container.resolve(GetStudentById);
     const student = await getStudentById.handle(studentId);
     return student;
   }
 
   @Patch("{studentId}")
-  public async updateStudent(
+  public async updateStudent (
     @Path() studentId: number,
-    @Body() requestBody: ICreateStudent
+      @Body() requestBody: ICreateStudent
   ): Promise<StudentDto> {
     const updateStudent = container.resolve(UpdateStudent);
     const student = await updateStudent.handle(studentId, requestBody);
@@ -66,7 +66,7 @@ export class StudentsController extends Controller {
   }
 
   @Delete("{studentId}")
-  public async deleteStudent(@Path() studentId: number): Promise<StudentDto> {
+  public async deleteStudent (@Path() studentId: number): Promise<StudentDto> {
     const deleteStudent = container.resolve(DeleteStudent);
     const student = await deleteStudent.handle(studentId);
     return student;

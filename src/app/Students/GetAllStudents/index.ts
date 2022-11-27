@@ -1,16 +1,18 @@
-import { StudentDto } from "../../dtos/StudentDto";
+import { inject, injectable } from "tsyringe";
+
 import { Student } from "../../../domain/Student";
+import { StudentDto } from "../../dtos/StudentDto";
+import { mapper } from "../../helpers/mappings/mapper";
 import { IStudentRepository } from "../../interfaces/IStudentRepository";
 
-import { inject, injectable, container } from "tsyringe";
-import { mapper } from "../../helpers/mappings/mapper";
 @injectable()
 export class GetAllStudents {
-  constructor(
+  constructor (
     @inject("StudentRepository")
-    private studentsRepository: IStudentRepository
+    private readonly studentsRepository: IStudentRepository
   ) {}
-  async handle(): Promise<StudentDto[]> {
+
+  async handle (): Promise<StudentDto[]> {
     const students = await this.studentsRepository.findAll();
     return mapper.mapArray(students, Student, StudentDto);
   }

@@ -5,11 +5,10 @@ import { Student } from "./../../../domain/Student";
 import { StudentDto } from "./../../dtos/StudentDto";
 
 export const mapper = createMapper({
-  strategyInitializer: classes(),
+  strategyInitializer: classes()
 });
 export class MappingProfiles {
-  public MappingProfiles() {
+  public MappingProfiles () {
     createMap(mapper, Student, StudentDto);
   }
 }
-
