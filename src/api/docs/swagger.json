@@ -75,7 +75,7 @@
 				},
 				"description": "Create Student Route",
 				"tags": [
-					"Users Routes"
+					"Students Routes"
 				],
 				"security": [],
 				"parameters": [],
@@ -108,7 +108,7 @@
 					}
 				},
 				"tags": [
-					"Users Routes"
+					"Students Routes"
 				],
 				"security": [],
 				"parameters": []
@@ -130,7 +130,7 @@
 					}
 				},
 				"tags": [
-					"Users Routes"
+					"Students Routes"
 				],
 				"security": [],
 				"parameters": [
@@ -160,7 +160,7 @@
 					}
 				},
 				"tags": [
-					"Users Routes"
+					"Students Routes"
 				],
 				"security": [],
 				"parameters": [
@@ -200,7 +200,7 @@
 					}
 				},
 				"tags": [
-					"Users Routes"
+					"Students Routes"
 				],
 				"security": [],
 				"parameters": [
